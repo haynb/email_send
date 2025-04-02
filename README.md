@@ -9,6 +9,7 @@
 - 支持多收件人
 - 使用Docker容器部署
 - 轻量级设计
+- API密钥身份验证保护
 
 ## 快速开始
 
@@ -23,7 +24,10 @@ SENDER_EMAIL=你的邮箱@163.com
 SENDER_NAME=邮件服务
 AUTH_PASSWORD=您的授权密码
 PORT=8080
+API_KEY=your-secure-api-key-here
 ```
+
+请确保将 `API_KEY` 修改为一个安全的、难以猜测的值。
 
 ### 部署
 
@@ -35,6 +39,14 @@ docker-compose up -d
 
 ## API使用
 
+### 身份验证
+
+所有API请求（除了健康检查）都需要在HTTP头部包含有效的API密钥：
+
+```
+X-API-Key: your-secure-api-key-here
+```
+
 ### 发送邮件
 
 **请求**:
@@ -42,6 +54,7 @@ docker-compose up -d
 ```
 POST /send-email
 Content-Type: application/json
+X-API-Key: your-secure-api-key-here
 
 {
   "to": ["收件人1@example.com", "收件人2@example.com"],
@@ -68,6 +81,8 @@ Content-Type: application/json
 GET /health
 ```
 
+健康检查接口不需要API密钥。
+
 ## 示例
 
 使用curl发送邮件：
@@ -75,6 +90,7 @@ GET /health
 ```bash
 curl -X POST http://localhost:8080/send-email \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: your-secure-api-key-here" \
   -d '{
     "to": ["收件人@example.com"],
     "subject": "服务器告警",
@@ -87,4 +103,5 @@ curl -X POST http://localhost:8080/send-email \
 
 - 请确保您的163邮箱已经开启POP3/SMTP服务
 - 使用授权密码而不是登录密码
-- 使用SMTP服务发送邮件可能会有每日发送数量限制 
+- 使用SMTP服务发送邮件可能会有每日发送数量限制
+- 应当设置一个强API密钥来保护您的服务 
