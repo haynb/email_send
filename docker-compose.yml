@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  emailservice:
+    build: .
+    ports:
+      - "28456:8080"
+    env_file:
+      - .env
+    restart: unless-stopped 

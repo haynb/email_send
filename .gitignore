@@ -1,0 +1,15 @@
+# 编译后的二进制文件
+emailservice
+
+# 环境变量文件
+.env
+
+# IDE相关
+.idea/
+.vscode/
+
+# 日志文件
+*.log
+
+# 临时文件
+tmp/ 
